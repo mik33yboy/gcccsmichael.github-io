@@ -35,6 +35,15 @@
 	}
 </script>
 
+<svelte:head>
+	<link
+		href="https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap"
+		rel="stylesheet"
+	/>
+
+</svelte:head>
+
+
 <!-- SCROLL BAR -->
 
 <div

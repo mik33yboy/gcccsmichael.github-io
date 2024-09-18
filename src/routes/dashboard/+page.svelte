@@ -3,17 +3,11 @@
 	let visible = true; // or false, depending on your logic
 </script>
 
-<svelte:head>
-	<link
-		href="https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap"
-		rel="stylesheet"
-	/>
-	<!-- Add Molex Shoora font link here if it's a web font -->
-</svelte:head>
 
 <!-- DASHBOARD SECTION -->
 
 <section class="bg-grid relative flex h-screen snap-start flex-col bg-black">
+    
 	<!-- NAV BAR -->
 
 	<nav class="mx-8 mb-4 mt-10 rounded-[20px] bg-white p-2 shadow-md">
@@ -55,13 +49,25 @@
 		{/if}
 	</div>
 	<div class="relative h-[200px]">
-		<img
-			src="/profile.png"
-			alt="Profile"
-			class="glow-effect absolute bottom-0 left-1/2 z-10 h-auto w-[800px] -translate-x-1/2 transform object-contain"
-		/>
-	</div>
+        <div class="absolute bottom-0 left-1/2 z-10 h-auto w-[800px] -translate-x-1/2 transform">
+            <div class="glitter-container">
+                {#each Array(40) as _, i}
+                    <div 
+                        class="glitter" 
+                        style="left: {20 + Math.random() * 60}%; top: {30 + Math.random() * 70}%;"
+                    ></div>
+                {/each}
+            </div>
+            <img
+                src="/profile.png"
+                alt="Profile"
+                class="glow-effect h-auto w-full object-contain transition-transform duration-300 hover:scale-110 relative z-10"
+            />
+        </div>
+    </div>
 
 	
 </section>
+
+
 
