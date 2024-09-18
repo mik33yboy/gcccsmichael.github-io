@@ -27,20 +27,11 @@
 	</div>
 	<div class="relative h-[200px]">
         <div class="absolute bottom-0 left-1/2 z-10 h-auto w-[900px] -translate-x-1/2 transform">
-            <div class="glitter-container">
-                {#each Array(40) as _, i}
-                    <div 
-                        class="glitter" 
-                        style="left: {20 + Math.random() * 60}%; top: {30 + Math.random() * 70}%;"
-                    ></div>
-                {/each}
-            </div>
             <div class="image-container overflow-hidden">
                 <img
                     src="/profile.png"
-                    
                     alt="Profile"
-                    class="glow-effect h-auto w-full object-contain transition-transform duration-300 hover:scale-110 relative z-10"
+                    class="glow-effect h-auto w-full object-contain transition-transform duration-300 hover:scale-110 relative z-10 orange-shadow"
                 />
             </div>
         </div>
@@ -58,11 +49,15 @@
     }
 
     .image-container img {
-        transition: transform 0.3s ease;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
     .image-container:hover img {
         transform: scale(1.1);
+    }
+
+    .orange-shadow {
+        box-shadow: 0 0 30px 15px rgba(255, 165, 0, 0.7);
     }
 </style>
 

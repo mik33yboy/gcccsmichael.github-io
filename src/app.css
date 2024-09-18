@@ -75,6 +75,17 @@ body{
     font-weight: bold;
 }
 
+@font-face {
+    font-family: 'ITC Avant Garde Gothic LT Demi';
+    src: url('/path/to/your/font/ITCAvantGardeGothicLTDemi.woff2') format('woff2'),
+         url('/path/to/your/font/ITCAvantGardeGothicLTDemi.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  .font-avant-garde-sans {
+    font-family: 'Avant Garde', 'Century Gothic', 'AppleGothic', sans-serif;
+  }
 /* SCROLL DOWN ANIMATION */
 
 @keyframes bounce {
@@ -91,36 +102,6 @@ body{
     animation: bounce 2s infinite;
 }
 
-/* GLITTERS EFFECT */
-
-@keyframes twinkle {
-    0%, 100% { opacity: 0; transform: scale(0.5); }
-    50% { opacity: 1; transform: scale(1); }
-  }
-
-  .glitter-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    overflow: hidden;
-    pointer-events: none;
-    z-index: 5;  /* Lower z-index to place behind the image */
-  }
-
-  .glitter {
-    position: absolute;
-    width: 6px;
-    height: 6px;
-    background-color: white;
-    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-    animation: twinkle 2s infinite;
-  }
-
-  .glitter:nth-child(2n) { animation-delay: 0.5s; }
-  .glitter:nth-child(3n) { animation-delay: 1s; }
-  .glitter:nth-child(4n) { animation-delay: 1.5s; }
 
 
 /* LOADER */
@@ -192,4 +173,8 @@ body{
     100% {
         transform: rotate(360deg);
     }
+}
+
+.font-avant-garde-sans {
+    font-family: 'Avant Garde', 'Century Gothic', 'AppleGothic', sans-serif;
 }

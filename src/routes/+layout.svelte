@@ -5,6 +5,7 @@
 	import Projects from './projects/+page.svelte';
 	import { onMount, afterUpdate } from 'svelte';
 	import { fade } from 'svelte/transition';
+	import { goto } from '$app/navigation';
 
 	let visible = false;
 	let isBottom = false;
@@ -14,6 +15,9 @@
 	let isDarkMode = false;
 	let prevScrollY = 0;
 	let isPointer = false;
+	let dashboardSection: HTMLElement | null = null;
+	let aboutSection: HTMLElement | null = null;
+	let projectsSection: HTMLElement | null = null;
 
 	onMount(() => {
 		// Simulate loading time (remove this in production and use actual loading logic)
@@ -82,6 +86,58 @@
 			}
 		}
 	}
+
+	function scrollToSection(section: HTMLElement | null) {
+		if (section && scrollContainer) {
+			const yOffset = -80; // Adjust this value to account for any fixed headers
+			const y = section.getBoundingClientRect().top + scrollContainer.scrollTop + yOffset;
+			
+			// Use smooth scrolling only for navigation clicks
+			smoothScroll(scrollContainer, y, 1000); // Reduced duration to 1 second
+		}
+	}
+
+	// Add this new function for custom smooth scrolling
+	function smoothScroll(element: HTMLElement, targetY: number, duration: number) {
+		const startY = element.scrollTop;
+		const difference = targetY - startY;
+		const startTime = performance.now();
+
+		function step() {
+			const currentTime = performance.now();
+			const progress = Math.min((currentTime - startTime) / duration, 1);
+			const amount = easeInOutQuint(progress);
+			element.scrollTop = startY + difference * amount;
+
+			if (progress < 1) {
+				requestAnimationFrame(step);
+			}
+		}
+
+		function easeInOutQuint(t: number): number {
+			return t < 0.5 ? 16 * t * t * t * t * t : 1 + 16 * (--t) * t * t * t * t;
+		}
+
+		requestAnimationFrame(step);
+	}
+
+	function handleNavClick(event: MouseEvent, section: string) {
+		event.preventDefault();
+		switch (section) {
+			case 'dashboard':
+				scrollToSection(dashboardSection);
+				break;
+			case 'about':
+				scrollToSection(aboutSection);
+				break;
+			case 'projects':
+				scrollToSection(projectsSection);
+				break;
+			case 'contact':
+				goto('/contact');
+				break;
+		}
+	}
 </script>
 
 <svelte:head>
@@ -91,6 +147,14 @@
 	/>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </svelte:head>
+
+
+
+
+
+
+
+
 
 <div class="custom-cursor" class:pointer={isPointer} bind:this={cursor}></div>
 
@@ -107,25 +171,25 @@
 	<nav class="fixed bottom-4 left-1/2 transform -translate-x-1/2 rounded-full px-6 py-2 z-50 transition-colors duration-150 pointer-events-none"
      class:bg-white={isDarkMode} class:bg-black={!isDarkMode}>
     <ul class="flex space-x-6">
-        <li><a href="/" class="transition-colors duration-150 rounded-full p-2 pointer-events-auto"
+        <li><a href="/" on:click|preventDefault={(e) => handleNavClick(e, 'dashboard')} class="transition-colors duration-150 rounded-full p-2 pointer-events-auto"
            class:text-white={!isDarkMode} class:text-black={isDarkMode}
            class:hover:text-black={!isDarkMode} class:hover:text-white={isDarkMode}
            class:hover:bg-white={!isDarkMode} class:hover:bg-black={isDarkMode}>
            <i class="fas fa-home text-xl"></i>
         </a></li>
-        <li><a href="/about" class="transition-colors duration-150 rounded-full p-2 pointer-events-auto"
+        <li><a href="/about" on:click|preventDefault={(e) => handleNavClick(e, 'about')} class="transition-colors duration-150 rounded-full p-2 pointer-events-auto"
            class:text-white={!isDarkMode} class:text-black={isDarkMode}
            class:hover:text-black={!isDarkMode} class:hover:text-white={isDarkMode}
            class:hover:bg-white={!isDarkMode} class:hover:bg-black={isDarkMode}>
            <i class="fas fa-user text-xl"></i>
         </a></li>
-        <li><a href="/projects" class="transition-colors duration-150 rounded-full p-2 pointer-events-auto"
+        <li><a href="/projects" on:click|preventDefault={(e) => handleNavClick(e, 'projects')} class="transition-colors duration-150 rounded-full p-2 pointer-events-auto"
            class:text-white={!isDarkMode} class:text-black={isDarkMode}
            class:hover:text-black={!isDarkMode} class:hover:text-white={isDarkMode}
            class:hover:bg-white={!isDarkMode} class:hover:bg-black={isDarkMode}>
            <i class="fas fa-project-diagram text-xl"></i>
         </a></li>
-        <li><a href="/contact" class="transition-colors duration-150 rounded-full p-2 pointer-events-auto"
+        <li><a href="/contact" on:click|preventDefault={(e) => handleNavClick(e, 'contact')} class="transition-colors duration-150 rounded-full p-2 pointer-events-auto"
            class:text-white={!isDarkMode} class:text-black={isDarkMode}
            class:hover:text-black={!isDarkMode} class:hover:text-white={isDarkMode}
            class:hover:bg-white={!isDarkMode} class:hover:bg-black={isDarkMode}>
@@ -135,13 +199,19 @@
 </nav>
 
 	<div
-		class="scrollbar-custom h-screen snap-y snap-mandatory overflow-x-hidden overflow-y-scroll"
+		class="scrollbar-custom h-screen overflow-x-hidden overflow-y-scroll"
 		bind:this={scrollContainer}
 	>
 		<main>
-			<Dashboard />
-			<About />
-			<Projects />
+			<div bind:this={dashboardSection}>
+				<Dashboard />
+				</div>
+			<div bind:this={aboutSection}>
+				<About />
+				</div>
+			<div bind:this={projectsSection}>
+				<Projects />
+				</div>
 			<!-- SCROLL ANIMATION -->
 
 			<div class="font-montserrat fixed bottom-8 left-8 z-50 animate-bounce text-white">
@@ -233,17 +303,18 @@
 	.custom-cursor {
 		pointer-events: none;
 		position: fixed;
-		width: 32px;
-		height: 32px;
-		background-image: url('/cursor.png');
-		background-size: contain;
-		background-repeat: no-repeat;
+		width: 20px;
+		height: 20px;
+		background-color: #ff5733; /* Bright orange-red color */
+		border-radius: 50%;
 		transform: translate(-50%, -50%);
 		z-index: 9999;
+		transition: width 0.3s, height 0.3s;
 	}
 
 	.custom-cursor.pointer {
-		background-image: url('/pointer.png');
+		width: 40px;
+		height: 40px;
 	}
 
 	:global(body) {
