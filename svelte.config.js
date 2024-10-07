@@ -1,16 +1,5 @@
-import sveltePreprocess from 'svelte-preprocess';
-import path from 'path';
+import preprocess from 'svelte-preprocess';
 
-/** @type {import('@sveltejs/kit').Config} */
-const config = {
-  preprocess: sveltePreprocess({
-    typescript: true,
-  }),
-  kit: {
-    alias: {
-      $components: path.resolve('./src/components'),
-    },
-  },
+export default {
+  preprocess: preprocess()
 };
-
-export default config;
