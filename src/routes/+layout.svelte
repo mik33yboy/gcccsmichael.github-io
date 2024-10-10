@@ -5,7 +5,6 @@
 	import Technologies from './technologies/+page.svelte';
 	import Projects from './projects/+page.svelte';
 	import MiniNav from './mininav/+page.svelte';
-	import ImageSlides from './image-slides/+page.svelte';
 	import { onMount } from 'svelte';
 	import { tweened } from 'svelte/motion';
 	import { cubicOut } from 'svelte/easing';
@@ -21,6 +20,8 @@
 	let cursorX = 0;
 	let cursorY = 0;
 	let isHovering = false;
+	let isOnDashboard = false;
+	let currentSection = 'dashboard'; // Track the current section
 
 	onMount(() => {
 		const updateScroll = () => {
@@ -35,6 +36,18 @@
 				const projectsHeight = projectsSection.offsetHeight;
 				const scrollPercentage = (scrollPosition - projectsTop + windowHeight) / projectsHeight;
 				bgOpacity.set(Math.max(0, Math.min(1, scrollPercentage)));
+			}
+
+			// Check if the user is on the dashboard section
+			const dashboardSection = document.getElementById('dashboard');
+			if (dashboardSection) {
+				const dashboardTop = dashboardSection.offsetTop;
+				const dashboardHeight = dashboardSection.offsetHeight;
+				if (scrollPosition >= dashboardTop && scrollPosition < dashboardTop + dashboardHeight) {
+					currentSection = 'dashboard'; // Update current section
+				} else {
+					currentSection = ''; // Reset if not in dashboard
+				}
 			}
 		};
 
@@ -74,7 +87,9 @@
 </svelte:head>
 
 <main class="bg-gradient min-h-screen relative overflow-hidden custom-cursor">
-	<MiniNav />  <!-- Moved MiniNav to the top -->
+	{#if currentSection !== 'dashboard'}
+		<MiniNav />  <!-- Moved MiniNav to the top -->
+	{/if}
 	<div class="shapes" style="opacity: {1 - $bgOpacity}">
 		<div class="shape shape-1"></div>
 		<div class="shape shape-2"></div>
@@ -94,6 +109,10 @@
 			<Projects />
 		</section>
 	</div>
+	<!-- Render MiniNav at the bottom if on dashboard -->
+	{#if isOnDashboard}
+		<MiniNav />  <!-- Moved MiniNav to the bottom -->
+	{/if}
 	<div class="custom-scrollbar">
 		<div 
 			class="scrollbar-thumb"

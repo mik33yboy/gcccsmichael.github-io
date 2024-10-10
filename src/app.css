@@ -3,6 +3,10 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+html {
+	scroll-behavior: smooth;
+}
+
 /* Animated gradient background */
 .bg-gradient {
 	background: linear-gradient(45deg, #000000, #050508, #080810);

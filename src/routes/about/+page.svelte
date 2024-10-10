@@ -55,7 +55,7 @@
 </script>
 
 <section
-	class="mx-[150px] mt-24 px-1 text-left"
+	class="mx-[150px] mt-16 px-1 text-left" 
 	style="font-family: 'Avant Garde', 'Century Gothic', 'AppleGothic', sans-serif;"
 >
 	<p class="text-[4.5rem] font-light leading-[1.1] tracking-tight">
