@@ -73,7 +73,7 @@
             <img src="weatherapp.jpg" alt="Weather App" class="w-full h-full object-cover rounded-[20px]" />
         </div>
         <div class="card bg-gray-800 bg-opacity-30 backdrop-blur-md shadow-md rounded-[20px] h-[400px] border-[0.5px]">
-            <img src="weatherapp.jpg" alt="Weather App" class="w-full h-full object-cover rounded-[20px]" />
+            <img src="kanbanboard.png" alt="Weather App" class="w-full h-full object-cover rounded-[20px]" />
         </div>
         <div class="card bg-gray-800 bg-opacity-30 backdrop-blur-md shadow-md rounded-[20px] h-[400px] border-[0.5px]">
             <img src="weatherapp.jpg" alt="Weather App" class="w-full h-full object-cover rounded-[20px]" />
